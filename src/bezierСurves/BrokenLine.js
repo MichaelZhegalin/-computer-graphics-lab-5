@@ -1,16 +1,14 @@
 import {circle} from "../geometry/Сircle";
 
-export const brokenLine = (context, coordinateArr) => {
+export const brokenLine = (context, coordinateArr, color = "blue") => {
     context.beginPath();
-    context.strokeStyle = 'blue'
-    for(let i = 0; i < (coordinateArr.length - 1); i++){
-        context.moveTo(coordinateArr[i].yCoordinate * 10, coordinateArr[i].xCoordinate * 10)
-        context.lineTo(coordinateArr[i + 1].yCoordinate * 10, coordinateArr[i + 1].xCoordinate * 10)
-    }
+    context.strokeStyle = color
+    context.moveTo(coordinateArr[0][0] * 10, coordinateArr[0][1] * 10)
+    context.lineTo(coordinateArr[1][0] * 10, coordinateArr[1][1] * 10)
     context.stroke();
 
-    for(let i = 0; i < coordinateArr.length; i++){
-        circle(context, coordinateArr[i].xCoordinate, coordinateArr[i].yCoordinate, 0.5, 'orange')
-    }
+    // for(let i = 0; i < coordinateArr.length; i++){
+    //     circle(context, coordinateArr[i].xCoordinate, coordinateArr[i].yCoordinate, 0.5, 'orange')
+    // }
 
 }
