@@ -18,7 +18,7 @@ const Inputs = (props) => {
                 }  type="text" value={props.coordinate.yCoordinate}/>
             </div>
 
-            <button className="removeDot" onClick={() => props.removeDot(props.coordinate.id)}>×</button>
+            <button className="removeDot" onClick={() => props.removeDot(props.coordinate.id, props.numberPolygon)}>×</button>
         </div>
     );
 };

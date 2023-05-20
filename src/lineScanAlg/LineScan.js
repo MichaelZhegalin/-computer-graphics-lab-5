@@ -14,7 +14,7 @@ export const lineScan = (groupSortTableEdge, polygonTable) =>{
     while (!stopFlag){
         extrimStop += 1;
         if(tableActiveEdge.length !== 0){
-            currentEdgeY = currentEdgeY + 0.5;
+            currentEdgeY = currentEdgeY + 0.3;
             changeXOnMinY(tableActiveEdge, currentEdgeY)
         }
 
@@ -23,7 +23,7 @@ export const lineScan = (groupSortTableEdge, polygonTable) =>{
         if(tableActiveEdge.length < 2){
             stopFlag = true;
         }
-        if(extrimStop === 1000){
+        if(extrimStop === 10000){
             stopFlag = true;
             console.log("Экстренная остановка программы, попали в бесконечный цикл")
             console.log("высота", currentEdgeY)
@@ -71,7 +71,7 @@ export const lineScan = (groupSortTableEdge, polygonTable) =>{
                         }
                     }
                     if(saveCounter === counter
-                        &&
+                        ||
                         (findZ(polygonTable[tableActiveEdge[i].rectangleParentNum].planeCoefficient, tableActiveEdge[i].xOnMinY, currentEdgeY)
                             >
                             findZ(polygonTable[tableActiveEdge[i - 1].rectangleParentNum].planeCoefficient, tableActiveEdge[i - 1].xOnMinY, currentEdgeY) || useEdgeArr.length === 0)){

@@ -10,20 +10,50 @@ function App() {
     const [state, setState] = useState(false);
     const [clearState, setClearState] = useState(false);
 
-    const [coordinateArr, setCoordinateArr] = useState([{
-        xCoordinate: "",
-        yCoordinate: "",
-        id: Date.now(),
-    }])
-    function createNewDot(){
-        setCoordinateArr(prevState => [...prevState, {
+    // const [coordinateArr, setCoordinateArr] = useState([{
+    //     xCoordinate: "",
+    //     yCoordinate: "",
+    //     id: Date.now(),
+    // }])
+
+    const [polygonList, setPolygonList] = useState([
+        [{
             xCoordinate: "",
             yCoordinate: "",
             id: Date.now(),
-        }])
+            number: 1,
+        }]
+    ]);
+
+    function createNewPolygonList(){
+        setPolygonList(prevState => [...prevState, [{
+            xCoordinate: "",
+            yCoordinate: "",
+            id: Date.now(),
+            number: polygonList.length,
+        }]])
     }
-    function removeDot(dot){
-        setCoordinateArr(coordinateArr.filter(dots => dots.id !== dot))
+
+    function createNewDot(numberPolygon){
+        polygonList[numberPolygon].push({
+            xCoordinate: "",
+            yCoordinate: "",
+            id: Date.now(),
+            number: polygonList.length,
+        })
+        setPolygonList(prevState => [...prevState])
+    }
+    function removeDot(dot, numberPolygon){
+        let newArr = []
+        for(let i = 0; i < polygonList[numberPolygon].length; i++){
+            if(polygonList[numberPolygon][i].id !== dot){
+                newArr.push(polygonList[numberPolygon][i])
+            }
+        }
+        polygonList[numberPolygon] = newArr
+
+        setPolygonList(prevState => [...prevState])
+
     }
 
     const clear = () =>{
@@ -37,8 +67,8 @@ function App() {
   return (
     <div className="App">
         <LabHeader/>
-        <Canvas clearState={clearState} draw={draw} setClearState={setClearState} state={state} coordinateArr={coordinateArr}/>
-        <Interface draw={draw} clear={clear} removeDot={removeDot} createNewDot={createNewDot} coordinateArr={coordinateArr} setCoordinateArr={setCoordinateArr}/>
+        <Canvas clearState={clearState} draw={draw} setClearState={setClearState} state={state} polygonList={polygonList}/>
+        <Interface draw={draw} clear={clear} removeDot={removeDot} createNewDot={createNewDot} polygonList={polygonList} setPolygonList={setPolygonList} createNewPolygonList={createNewPolygonList}/>
     </div>
   );
 }

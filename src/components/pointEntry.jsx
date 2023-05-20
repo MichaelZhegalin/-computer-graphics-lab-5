@@ -5,7 +5,7 @@ const PointEntry = (props) => {
 
     return (
         <div>
-            <Inputs num={props.num} coordinate={props.coordinate} setCoordinateArr={props.setCoordinateArr} removeDot={props.removeDot}/>
+            <Inputs numberPolygon={props.numberPolygon} num={props.num} coordinate={props.coordinate} setCoordinateArr={props.setCoordinateArr} removeDot={props.removeDot}/>
         </div>
     );
 };

@@ -1,12 +1,13 @@
 import Buttons from "./Buttons";
 import DotsList from "./DotsList";
+import PolygonList from "./PolygonList";
 
-const Interface = ({draw, clear, coordinateArr, createNewDot, setCoordinateArr, removeDot}) => {
+const Interface = ({draw, clear, polygonList, createNewDot, setPolygonList, removeDot, createNewPolygonList}) => {
 
     return (
         <div className='interface'>
-            <DotsList removeDot={removeDot} coordinateArr={coordinateArr} setCoordinateArr={setCoordinateArr}/>
-            <button className="createDot" onClick={createNewDot}>Создать новую точку</button>
+            <PolygonList removeDot={removeDot} polygonList={polygonList} setPolygonList={setPolygonList} createNewDot={createNewDot}/>
+            <button className="createDot" onClick={createNewPolygonList}>Создать новую плоскость</button>
             <Buttons draw={draw} clear={clear}/>
         </div>
     );
