@@ -16,6 +16,10 @@ const Inputs = (props) => {
                     props.coordinate.yCoordinate = e.target.value
                     props.setCoordinateArr(prev => [...prev])}
                 }  type="text" value={props.coordinate.yCoordinate}/>
+                <input placeholder={strYPlaceholder} onChange={(e) => {
+                    props.coordinate.zCoordinate = e.target.value
+                    props.setCoordinateArr(prev => [...prev])}
+                }  type="text" value={props.coordinate.zCoordinate}/>
             </div>
 
             <button className="removeDot" onClick={() => props.removeDot(props.coordinate.id, props.numberPolygon)}>×</button>

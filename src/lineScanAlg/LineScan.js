@@ -14,7 +14,7 @@ export const lineScan = (groupSortTableEdge, polygonTable) =>{
     while (!stopFlag){
         extrimStop += 1;
         if(tableActiveEdge.length !== 0){
-            currentEdgeY = currentEdgeY + 0.3;
+            currentEdgeY = currentEdgeY + 0.1;
             changeXOnMinY(tableActiveEdge, currentEdgeY)
         }
 
@@ -77,8 +77,9 @@ export const lineScan = (groupSortTableEdge, polygonTable) =>{
                             findZ(polygonTable[tableActiveEdge[i - 1].rectangleParentNum].planeCoefficient, tableActiveEdge[i - 1].xOnMinY, currentEdgeY) || useEdgeArr.length === 0)){
                         counter += 1
                         if(colorLine[tableActiveEdge[i].rectangleParentNum]["startLine" + colorLine[tableActiveEdge[i].rectangleParentNum].lineCounter]  !== undefined){
+                            // console.log(tableActiveEdge[i], "Проверочка")
                             colorLine[tableActiveEdge[i].rectangleParentNum].lineCounter += 1;
-                            colorLine[tableActiveEdge[tableActiveEdge[i].rectangleParentNum].rectangleParentNum]["startLine" + colorLine[tableActiveEdge[i].rectangleParentNum].lineCounter] = tableActiveEdge[i].xOnMinY
+                            colorLine[tableActiveEdge[i].rectangleParentNum]["startLine" + colorLine[tableActiveEdge[i].rectangleParentNum].lineCounter] = tableActiveEdge[i].xOnMinY
                             colorLine[tableActiveEdge[i].rectangleParentNum].special = "Yes";
                             colorLine[tableActiveEdge[i].rectangleParentNum].color = polygonTable[tableActiveEdge[i].rectangleParentNum].color;
                             colorLine[tableActiveEdge[i].rectangleParentNum].zCoordinate = findZ(polygonTable[tableActiveEdge[i].rectangleParentNum].planeCoefficient, tableActiveEdge[i].xOnMinY, currentEdgeY);

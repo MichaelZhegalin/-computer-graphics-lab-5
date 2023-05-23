@@ -45,7 +45,7 @@
 input{
     text-align: center;
     align-self: center;
-    width: 11vw;
+    width: 7vw;
     border: none;
     border-radius: 10px;
     padding: 10px;
@@ -62,12 +62,24 @@ input:focus{
 }
 
 .dotsList{
-    height: 50vh;
+    min-height: 22vh;
+    max-height: 22vh;
+    border: solid 2px rgba(0,0,0, 0.5);
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: auto;
+    text-align: center;
+}
+
+.polygonList{
+    height: 51vh;
     display: flex;
     flex-direction: column;
     gap: 15px;
     overflow: auto;
-    text-align: center;
 }
 
 

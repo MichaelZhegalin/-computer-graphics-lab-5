@@ -10,16 +10,11 @@ function App() {
     const [state, setState] = useState(false);
     const [clearState, setClearState] = useState(false);
 
-    // const [coordinateArr, setCoordinateArr] = useState([{
-    //     xCoordinate: "",
-    //     yCoordinate: "",
-    //     id: Date.now(),
-    // }])
-
     const [polygonList, setPolygonList] = useState([
         [{
             xCoordinate: "",
             yCoordinate: "",
+            zCoordinate: "",
             id: Date.now(),
             number: 1,
         }]
@@ -29,6 +24,7 @@ function App() {
         setPolygonList(prevState => [...prevState, [{
             xCoordinate: "",
             yCoordinate: "",
+            zCoordinate: "",
             id: Date.now(),
             number: polygonList.length,
         }]])
@@ -38,6 +34,7 @@ function App() {
         polygonList[numberPolygon].push({
             xCoordinate: "",
             yCoordinate: "",
+            zCoordinate: "",
             id: Date.now(),
             number: polygonList.length,
         })
@@ -57,6 +54,15 @@ function App() {
     }
 
     const clear = () =>{
+        setPolygonList([
+            [{
+                xCoordinate: "",
+                yCoordinate: "",
+                zCoordinate: "",
+                id: Date.now(),
+                number: 1,
+            }]
+        ])
         setClearState(prevState => !prevState);
     }
 

@@ -6,6 +6,8 @@ import {polygonTable} from "./lineScanAlg/PolygonTable";
 import {edgeTable} from "./lineScanAlg/EdgeTable";
 import {edgeGroupSortTable} from "./lineScanAlg/EdgeGroupSortTable";
 import {lineScan} from "./lineScanAlg/LineScan";
+import {intersectionLine} from "./lineScanAlg/IntersectionLine";
+import {polygonSubdivision} from "./lineScanAlg/PolygonSubdivision";
 
 export const LaboratoryTask = (context, coordinateArr) =>{
 
@@ -31,17 +33,48 @@ export const LaboratoryTask = (context, coordinateArr) =>{
     // }
     // bezierCurveEquation(bezierDotsX, bezierDotsY, context)
 
-
-    // let resultPolygon = polygonTable([[[10, 0, 0], [5, 5, 25], [20, 10, 40]], [[-1, -1, 2], [-5, -10, 25], [20, 5, 40]]], ["black", "white"])
+    //let resultPolygon = polygonTable([[[10, -15, 6], [5, 5, 6], [20, 10, 6]], [[-6, -1, 4], [-5, -10, 8], [30, 5, 7]]], ["black", "red"])
+    //let resultPolygon = polygonTable([[[10, 0, 0], [-15, -12, 25], [20, 10, 40]], [[-1, -1, 2], [-5, -10, 25], [12, 1.61, 40]]], ["black", "red"])
+   // let resultPolygon = polygonTable([[[10, -20, 0], [20,0,-10], [15,6,19.2]], [[ 0,10,10], [-10, 0, 30], [ 20,0,10]]], ["black", "red"])
+   //  let resultPolygon = polygonTable([[[10, 0, 25], [5, 5, 40], [20, 10, 2]], [[-1, -1, 2], [-5, -10, 25], [30.18, 11.53, 40]]], ["black", "red"])
     let polygonsCoordinate = []
     for(let i = 0; i < coordinateArr.length; i++){
         polygonsCoordinate.push([])
         for(let j = 0; j < coordinateArr[i].length; j++){
-            polygonsCoordinate[i].push([Number(coordinateArr[i][j].xCoordinate), Number(coordinateArr[i][j].yCoordinate), Number(coordinateArr[i][j].number)])
+            polygonsCoordinate[i].push([Number(coordinateArr[i][j].xCoordinate) + 0.00001 * j, Number(coordinateArr[i][j].yCoordinate), Number(coordinateArr[i][j].zCoordinate)])
         }
     }
-    // let resultPolygon = polygonTable([[[10, -15, 3], [5, 5, 3], [20, 10, 3]], [[-1, -1, 2], [-5, -10, 2], [30, 5, 2]]], ["black", "white"])
-    let resultPolygon = polygonTable(polygonsCoordinate, ["black", "white"])
+    //[10, 0, 25], [5, 5, 40], [20, 10, 2]
+    // [-1, -1, 2], [-5, -10, 25], [30.18, 11.53, 40]
+    //let resultPolygon = polygonTable([[[10, -15, 6], [5, 5, 6], [20, 10, 6]], [[-1, -1, 7], [-5, -10, 7], [30, 5, 7]], [[5, 15, 5], [30, 5, 5], [20, -5, 5]]], ["black", "white"])
+    let resultPolygon = polygonTable(polygonsCoordinate, ["blue", "red", "yellow", "green"])
+    let res;
+    let save = resultPolygon.length;
+    for(let i = 0; i < save - 1; i++){
+        res = intersectionLine(resultPolygon[i].planeCoefficient, resultPolygon[i + 1].planeCoefficient,[resultPolygon[i].point0, resultPolygon[i].point1, resultPolygon[i].point2], [resultPolygon[i + 1].point0, resultPolygon[i + 1].point1, resultPolygon[i + 1].point2])
+        console.log(res)
+        if(res !== undefined && res.length !== 0){
+            let newPolygon
+            let subdivision = polygonSubdivision([resultPolygon[i].point0, resultPolygon[i].point1, resultPolygon[i].point2], res, resultPolygon)
+            if(subdivision[0].length === 1){
+                newPolygon = polygonTable([[subdivision[0][0], [res[0].x, res[0].y, res[0].z], [res[1].x, res[1].y, res[1].z]], [subdivision[1][0], [res[0].x, res[0].y, res[0].z], [res[1].x, res[1].y, res[1].z], subdivision[1][1]]], ["blue", "yellow"])
+            }else{
+                newPolygon = polygonTable([[subdivision[1][0], [res[0].x, res[0].y, res[0].z], [res[1].x, res[1].y, res[1].z]], [subdivision[0][0], subdivision[0][1], [res[0].x, res[0].y, res[0].z], [res[1].x, res[1].y, res[1].z]]], ["blue", "yellow"])
+            }
+            resultPolygon.splice(i, 1)
+            newPolygon[0].polygonNum = i;
+            if(newPolygon[resultPolygon.length] !== undefined){
+                newPolygon[1].polygonNum = newPolygon[resultPolygon.length].polygonNum + 1;
+            }else{
+                newPolygon[1].polygonNum = 2;
+            }
+            resultPolygon.push(newPolygon[0])
+            resultPolygon.push(newPolygon[1])
+            console.log("Вывод результата", res, subdivision)
+        }
+        console.log("Вывод результата треугольник", resultPolygon)
+    }
+
     console.log(resultPolygon)
     console.log("-------------------------------------------------------------")
     let resultEdge = edgeTable(resultPolygon)
@@ -51,37 +84,13 @@ export const LaboratoryTask = (context, coordinateArr) =>{
     console.log("-------------------------------------------------------------")
     let lineScanRes = lineScan(sortEdge, resultPolygon)
 
-    let i = 0;
-    let flagStopSort = false
-    let save;
-     while (!flagStopSort){
-        let test1 = lineScanRes[i].zCoordinate
-        let test2 = lineScanRes[i + 1].zCoordinate
-        console.log(test1 > test2)
-        // console.log("Сортирую", lineScanRes[i].zCoordinate, lineScanRes[i+1].zCoordinate, typeof lineScanRes[i].zCoordinate, typeof lineScanRes[i+1].zCoordinate, Number(lineScanRes[i].zCoordinate) === Number(lineScanRes[i].zCoordinate[i+1]))
-        if(test1 > test2){
-            console.log("Сортирую")
-            save = lineScanRes[i]
-            lineScanRes[i] = lineScanRes[i + 1]
-            lineScanRes[i + 1] = save
-            i = -1
-        }
+    lineScanRes.sort((a, b) =>{
+        return a.zCoordinate - b.zCoordinate
+    })
 
-        if(i === lineScanRes.length - 2){
-            flagStopSort = true
-        }
-
-        i++
-    }
-
-    console.log(lineScanRes)
     for(let i = 0; i < lineScanRes.length; i++){
-        if(lineScanRes[i].numPolygon === 1){
-            brokenLine(context, [[lineScanRes[i].endLine1, lineScanRes[i].tall], [lineScanRes[i].startLine1, lineScanRes[i].tall]], "red")
-            // brokenLine(context, [[lineScanRes[i].startLine1, lineScanRes[i].tall], [lineScanRes[i].endLine1, lineScanRes[i].tall]], "red")
-        }else if(lineScanRes[i].numPolygon === 0){
-            brokenLine(context, [[lineScanRes[i].endLine1, lineScanRes[i].tall], [lineScanRes[i].startLine1, lineScanRes[i].tall]], "blue")
-            // brokenLine(context, [[lineScanRes[i].startLine1, lineScanRes[i].tall], [lineScanRes[i].endLine1, lineScanRes[i].tall]], "blue")
+        if(lineScanRes[i].numPolygon !== undefined){
+            brokenLine(context, [[lineScanRes[i].endLine1, lineScanRes[i].tall], [lineScanRes[i].startLine1, lineScanRes[i].tall]], lineScanRes[i].color)
         }
     }
 
@@ -89,5 +98,7 @@ export const LaboratoryTask = (context, coordinateArr) =>{
         brokenLine(context, [[resultEdge[i].endPoint[0], resultEdge[i].endPoint[1]], [resultEdge[i].startPoint[0], resultEdge[i].startPoint[1]]])
         // brokenLine(context, [[resultEdge[i].startPoint[0], resultEdge[i].startPoint[1]], [resultEdge[i].endPoint[0], resultEdge[i].endPoint[1]]])
     }
+
+    // brokenLine(context, [res[0], res[1]], "blue")
 
 }

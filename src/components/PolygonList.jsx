@@ -4,7 +4,7 @@ import PointEntry from "./pointEntry";
 
 const PolygonList = ({polygonList, setPolygonList, removeDot, createNewDot}) => {
     return (
-        <div>
+        <div className='polygonList'>
             {polygonList.map((el, num) =>
                     <DotsList key={num} removeDot={removeDot} coordinateArr={el} setCoordinateArr={setPolygonList} createNewDot={createNewDot} numberPolygon={num}/>
                 )}
